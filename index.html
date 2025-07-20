@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>缶かんテトリス</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="start-screen" class="screen">
+        <div class="content-box">
+            <h1>缶かんテトリス</h1>
+            <p>側島の缶かん、積んでみませんか？</p>
+            <button id="start-button" class="button">ゲーム開始</button>
+        </div>
+    </div>
+
+    <div id="game-over-screen" class="screen" style="display: none;">
+        <div class="content-box">
+            <h1>ゲームオーバー</h1>
+            <p>今回の得点: <span id="final-score">0</span></p>
+            <button id="retry-button" class="button">もう一度遊ぶ</button>
+        </div>
+    </div>
+
+    <div class="game-container" style="display: none;">
+        <main class="game-main">
+            <div class="game-board">
+                <canvas id="game-canvas" width="300" height="600"></canvas>
+            </div>
+            <aside class="game-info">
+                <div class="info-box">
+                    <h2>次の缶かん</h2>
+                    <canvas id="next-canvas" width="120" height="120"></canvas>
+                </div>
+                <div class="info-box">
+                    <h2>得点</h2>
+                    <p id="score">0</p>
+                </div>
+                <div id="leaderboard" class="info-box">
+                    <h2>本日の番付</h2>
+                    <ol id="score-list"></ol>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Audio Files -->
+    <audio id="bgm" src="ゆったりお散歩.mp3" loop></audio>
+    <audio id="rotate-sound" src="8bit選択1.mp3"></audio>
+    <audio id="clear-sound" src="8bit獲得8.mp3"></audio>
+    <audio id="drop-sound" src="drop.wav"></audio> <!-- drop.wavは既存のまま -->
+    <audio id="game-over-sound" src="8bit失敗1.mp3"></audio>
+    <audio id="top1-sound" src="8bit勝利1.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

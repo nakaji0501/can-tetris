@@ -1,0 +1,121 @@
+/* style.css */
+body {
+    font-family: 'Meiryo', 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    background-image: url('karakusa.jpg');
+    background-size: cover;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom right, rgba(204, 204, 204, 0.7), rgba(153, 153, 153, 0.7)); /* 半透明のメタル調グラデーション */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 100;
+}
+
+.content-box {
+    background: #fff;
+    padding: 40px 60px;
+    border: 3px solid #5a3e2b;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.content-box h1 {
+    color: #5a3e2b;
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+.button {
+    background-color: #d96f34; /* オレンジがかった茶色 */
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px #a0522d;
+}
+
+.button:hover {
+    background-color: #e8844a;
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+.game-container {
+    display: none; /* Initially hidden */
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    border: 3px solid #5a3e2b;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.game-header h1 {
+    text-align: center;
+    color: #5a3e2b;
+    margin-bottom: 20px;
+}
+
+.game-main {
+    display: flex;
+    gap: 20px;
+}
+
+.game-board canvas {
+    border: 2px solid #5a3e2b;
+    background-color: #fff; /* 白に戻す */
+}
+
+.game-info {
+    width: 200px;
+}
+
+.info-box {
+    background-color: #fff;
+    border: 2px solid #5a3e2b;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.info-box h2 {
+    margin-top: 0;
+    color: #5a3e2b;
+}
+
+#score {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+#leaderboard ol {
+    list-style-type: none;
+    padding: 0;
+}
+
+#leaderboard li {
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
