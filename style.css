@@ -10,7 +10,6 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden; /* Prevent scrolling on mobile */
 }
 
 .screen {
@@ -33,8 +32,6 @@ body {
     border: 3px solid #5a3e2b;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    max-width: 90%; /* Adjust for smaller screens */
-    box-sizing: border-box; /* Include padding in width */
 }
 
 .content-box h1 {
@@ -72,9 +69,6 @@ body {
     border-radius: 10px;
     border: 3px solid #5a3e2b;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    max-width: 95%; /* Adjust for smaller screens */
-    box-sizing: border-box;
-    overflow-y: auto; /* Allow scrolling if content overflows */
 }
 
 .game-header h1 {
@@ -86,21 +80,15 @@ body {
 .game-main {
     display: flex;
     gap: 20px;
-    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-    justify-content: center; /* Center items when wrapped */
 }
 
 .game-board canvas {
     border: 2px solid #5a3e2b;
     background-color: #fff; /* 白に戻す */
-    max-width: 100%; /* Ensure canvas fits within container */
-    height: auto; /* Maintain aspect ratio */
 }
 
 .game-info {
     width: 200px;
-    flex-grow: 1; /* Allow info to grow and take available space */
-    min-width: 250px; /* Ensure info box doesn't get too small */
 }
 
 .info-box {
@@ -132,89 +120,125 @@ body {
     font-size: 1.1em;
 }
 
-/* Mobile specific styles */
 @media (max-width: 768px) {
     body {
-        height: auto; /* Allow body to expand */
-        min-height: 100vh; /* Ensure it takes full viewport height */
-        padding: 10px; /* Add some padding */
-        align-items: flex-start; /* Align content to top */
-    }
-
-    .screen {
-        padding: 10px;
-    }
-
-    .content-box {
-        padding: 20px 30px;
-    }
-
-    .content-box h1 {
-        font-size: 2em;
-    }
-
-    .button {
-        padding: 12px 25px;
-        font-size: 1em;
+        height: 100vh; /* Full viewport height */
+        overflow: hidden; /* Prevent scrolling */
+        align-items: center; /* Center content vertically */
+        justify-content: center; /* Center content horizontally */
     }
 
     .game-container {
         padding: 10px;
-        margin-top: 20px; /* Add some space from top */
+        width: 100%;
+        height: 100%;
+        display: flex; /* Use flexbox for layout */
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center items horizontally */
+        justify-content: center; /* Center items vertically */
+        background-color: transparent; /* Remove background for full screen effect */
+        border: none; /* Remove border */
+        box-shadow: none; /* Remove shadow */
     }
 
     .game-main {
-        flex-direction: column; /* Stack items vertically */
+        flex-direction: column; /* Stack board and info vertically */
         align-items: center; /* Center items */
+        gap: 10px; /* Reduce gap */
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+    }
+
+    .game-board {
+        width: auto; /* Adjust width based on content */
+        height: auto; /* Adjust height based on content */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .game-board canvas {
+        width: 90vw; /* Make canvas responsive to viewport width */
+        height: auto; /* Maintain aspect ratio */
+        max-height: 70vh; /* Limit height to prevent overflow */
     }
 
     .game-info {
-        width: 100%; /* Full width on mobile */
-        margin-top: 20px; /* Space between board and info */
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: auto; /* Adjust width to content */
+        padding: 0; /* Remove padding */
+        margin-bottom: 0;
+        background-color: transparent; /* Remove background */
+        border: none; /* Remove border */
+        border-radius: 0; /* Remove border-radius */
+        box-shadow: none; /* Remove shadow */
+        z-index: 50;
+        display: flex; /* Use flexbox for internal layout */
+        flex-direction: column; /* Stack score and next piece vertically */
+        align-items: flex-end; /* Align items to the right */
     }
 
-    .info-box {
-        margin-bottom: 15px;
+    .info-box h2 {
+        font-size: 0.7em; /* Even smaller for "次の缶かん" */
+        margin-bottom: 2px;
+        color: #333; /* Ensure text color is visible */
     }
 
-    /* Touch controls */
-    .touch-controls {
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
+    #score {
+        font-size: 0.9em; /* Slightly smaller for score */
+        font-weight: bold;
+        color: #333; /* Ensure text color is visible */
+    }
+
+    #next-canvas {
+        width: 60px; /* Even smaller next piece canvas */
+        height: 60px;
+        margin-left: auto; /* Align to right */
+        display: block; /* Ensure margin-left auto works */
+    }
+
+    #leaderboard {
+        display: none; /* Hide leaderboard during game */
+    }
+
+    .game-container.game-over #leaderboard {
+        display: block; /* Show leaderboard on game over screen */
+        position: static; /* Reset position for game over screen */
+        width: auto;
+        background-color: #fff;
+        border: 2px solid #5a3e2b;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .game-container.game-over .game-main {
+        flex-direction: column; /* Stack elements vertically on game over */
+    }
+
+    .game-container.game-over .game-board,
+    .game-container.game-over .game-info {
+        display: none; /* Hide game board and info on game over */
+    }
+
+    .game-container.game-over #final-score {
+        font-size: 2em;
+        font-weight: bold;
+        color: #d96f34;
+    }
+
+    .game-container.game-over .content-box {
+        background: #fff;
+        padding: 40px 60px;
+        border: 3px solid #5a3e2b;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        max-width: 90%;
+        box-sizing: border-box;
+    }
+
+    .game-container.game-over .button {
         margin-top: 20px;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .touch-button {
-        background-color: #d96f34;
-        color: white;
-        padding: 15px 0;
-        border: none;
-        border-radius: 8px;
-        font-size: 1.2em;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.2s;
-        box-shadow: 0 4px #a0522d;
-        flex: 1 1 45%; /* Allow buttons to take roughly half width */
-        min-width: 120px; /* Minimum width for buttons */
-        text-align: center;
-    }
-
-    .touch-button:active {
-        transform: translateY(2px);
-        box-shadow: none;
-    }
-
-    .touch-button.large {
-        flex: 1 1 95%; /* Larger button takes more width */
-    }
-}
-
-/* Hide touch controls on larger screens */
-@media (min-width: 769px) {
-    .touch-controls {
-        display: none;
     }
 }

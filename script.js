@@ -312,58 +312,82 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', startGame);
     retryButton.addEventListener('click', startGame);
 
-    // Touch controls event listeners
-    document.getElementById('move-left').addEventListener('click', () => {
-        if (!gameInterval) return;
-        currentX--;
-        if (collision()) currentX++;
-        draw();
-    });
+    // Touch controls
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchMoveX = 0;
+    let touchMoveY = 0;
+    let touchHoldInterval = null;
 
-    document.getElementById('move-right').addEventListener('click', () => {
-        if (!gameInterval) return;
-        currentX++;
-        if (collision()) currentX--;
-        draw();
-    });
+    canvas.addEventListener('touchstart', (e) => {
+        if (!gameInterval) return; // Only active during game
+        e.preventDefault();
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchMoveX = touchStartX;
+        touchMoveY = touchStartY;
 
-    document.getElementById('move-down').addEventListener('click', () => {
-        if (!gameInterval) return;
-        currentY++;
-        if (collision()) currentY--;
-        draw();
-    });
-
-    document.getElementById('rotate').addEventListener('click', () => {
-        if (!gameInterval) return;
-        const rotated = [];
-        const shape = currentTetromino.shape;
-        for (let i = 0; i < shape[0].length; i++) {
-            const newRow = [];
-            for (let j = shape.length - 1; j >= 0; j--) {
-                newRow.push(shape[j][i]);
+        // Start hold interval for continuous movement
+        touchHoldInterval = setInterval(() => {
+            if (Math.abs(touchMoveX - touchStartX) > 10) { // Only move if significant horizontal drag
+                if (touchMoveX < touchStartX) {
+                    // Move left
+                    currentX--;
+                    if (collision()) currentX++;
+                } else {
+                    // Move right
+                    currentX++;
+                    if (collision()) currentX--;
+                }
+                draw();
+                touchStartX = touchMoveX; // Reset startX to prevent over-sensitive movement
             }
-            rotated.push(newRow);
-        }
-        const prevShape = currentTetromino.shape;
-        currentTetromino.shape = rotated;
-        if (collision()) {
-            currentTetromino.shape = prevShape;
-        } else {
-            playSound(rotateSound);
-        }
-        draw();
-    });
+        }, 150); // Adjust interval for desired speed
+    }, { passive: false }); // Use passive: false to allow preventDefault
 
-    document.getElementById('drop').addEventListener('click', () => {
-        if (!gameInterval) return;
-        while (!collision()) {
-            currentY++;
+    canvas.addEventListener('touchmove', (e) => {
+        if (!gameInterval) return; // Only active during game
+        e.preventDefault();
+        touchMoveX = e.touches[0].clientX;
+        touchMoveY = e.touches[0].clientY;
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', (e) => {
+        if (!gameInterval) return; // Only active during game
+        e.preventDefault();
+        clearInterval(touchHoldInterval);
+
+        const deltaX = touchMoveX - touchStartX;
+        const deltaY = touchMoveY - touchStartY;
+
+        if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) {
+            // Tap for rotation
+            const rotated = [];
+            const shape = currentTetromino.shape;
+            for (let i = 0; i < shape[0].length; i++) {
+                const newRow = [];
+                for (let j = shape.length - 1; j >= 0; j--) {
+                    newRow.push(shape[j][i]);
+                }
+                rotated.push(newRow);
+            }
+            const prevShape = currentTetromino.shape;
+            currentTetromino.shape = rotated;
+            if (collision()) {
+                currentTetromino.shape = prevShape;
+            } else {
+                playSound(rotateSound);
+            }
+        } else if (deltaY > 50 && Math.abs(deltaX) < Math.abs(deltaY)) {
+            // Swipe down for drop
+            while (!collision()) {
+                currentY++;
+            }
+            currentY--;
+            solidify();
+            removeLines();
+            newShape();
         }
-        currentY--;
-        solidify();
-        removeLines();
-        newShape();
         draw();
     });
 
