@@ -10,6 +10,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden; /* Prevent scrolling on mobile */
 }
 
 .screen {
@@ -32,6 +33,8 @@ body {
     border: 3px solid #5a3e2b;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    max-width: 90%; /* Adjust for smaller screens */
+    box-sizing: border-box; /* Include padding in width */
 }
 
 .content-box h1 {
@@ -69,6 +72,9 @@ body {
     border-radius: 10px;
     border: 3px solid #5a3e2b;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    max-width: 95%; /* Adjust for smaller screens */
+    box-sizing: border-box;
+    overflow-y: auto; /* Allow scrolling if content overflows */
 }
 
 .game-header h1 {
@@ -80,15 +86,21 @@ body {
 .game-main {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    justify-content: center; /* Center items when wrapped */
 }
 
 .game-board canvas {
     border: 2px solid #5a3e2b;
     background-color: #fff; /* 白に戻す */
+    max-width: 100%; /* Ensure canvas fits within container */
+    height: auto; /* Maintain aspect ratio */
 }
 
 .game-info {
     width: 200px;
+    flex-grow: 1; /* Allow info to grow and take available space */
+    min-width: 250px; /* Ensure info box doesn't get too small */
 }
 
 .info-box {
@@ -118,4 +130,91 @@ body {
 #leaderboard li {
     margin-bottom: 5px;
     font-size: 1.1em;
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+    body {
+        height: auto; /* Allow body to expand */
+        min-height: 100vh; /* Ensure it takes full viewport height */
+        padding: 10px; /* Add some padding */
+        align-items: flex-start; /* Align content to top */
+    }
+
+    .screen {
+        padding: 10px;
+    }
+
+    .content-box {
+        padding: 20px 30px;
+    }
+
+    .content-box h1 {
+        font-size: 2em;
+    }
+
+    .button {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+
+    .game-container {
+        padding: 10px;
+        margin-top: 20px; /* Add some space from top */
+    }
+
+    .game-main {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items */
+    }
+
+    .game-info {
+        width: 100%; /* Full width on mobile */
+        margin-top: 20px; /* Space between board and info */
+    }
+
+    .info-box {
+        margin-bottom: 15px;
+    }
+
+    /* Touch controls */
+    .touch-controls {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .touch-button {
+        background-color: #d96f34;
+        color: white;
+        padding: 15px 0;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        box-shadow: 0 4px #a0522d;
+        flex: 1 1 45%; /* Allow buttons to take roughly half width */
+        min-width: 120px; /* Minimum width for buttons */
+        text-align: center;
+    }
+
+    .touch-button:active {
+        transform: translateY(2px);
+        box-shadow: none;
+    }
+
+    .touch-button.large {
+        flex: 1 1 95%; /* Larger button takes more width */
+    }
+}
+
+/* Hide touch controls on larger screens */
+@media (min-width: 769px) {
+    .touch-controls {
+        display: none;
+    }
 }

@@ -312,6 +312,61 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', startGame);
     retryButton.addEventListener('click', startGame);
 
+    // Touch controls event listeners
+    document.getElementById('move-left').addEventListener('click', () => {
+        if (!gameInterval) return;
+        currentX--;
+        if (collision()) currentX++;
+        draw();
+    });
+
+    document.getElementById('move-right').addEventListener('click', () => {
+        if (!gameInterval) return;
+        currentX++;
+        if (collision()) currentX--;
+        draw();
+    });
+
+    document.getElementById('move-down').addEventListener('click', () => {
+        if (!gameInterval) return;
+        currentY++;
+        if (collision()) currentY--;
+        draw();
+    });
+
+    document.getElementById('rotate').addEventListener('click', () => {
+        if (!gameInterval) return;
+        const rotated = [];
+        const shape = currentTetromino.shape;
+        for (let i = 0; i < shape[0].length; i++) {
+            const newRow = [];
+            for (let j = shape.length - 1; j >= 0; j--) {
+                newRow.push(shape[j][i]);
+            }
+            rotated.push(newRow);
+        }
+        const prevShape = currentTetromino.shape;
+        currentTetromino.shape = rotated;
+        if (collision()) {
+            currentTetromino.shape = prevShape;
+        } else {
+            playSound(rotateSound);
+        }
+        draw();
+    });
+
+    document.getElementById('drop').addEventListener('click', () => {
+        if (!gameInterval) return;
+        while (!collision()) {
+            currentY++;
+        }
+        currentY--;
+        solidify();
+        removeLines();
+        newShape();
+        draw();
+    });
+
     // Load images and then initialize
     for (let key in IMAGE_PATHS) {
         images[key] = new Image();
