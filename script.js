@@ -390,8 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         draw();
     });
-
-    // Load images and then initialize
     for (let key in IMAGE_PATHS) {
         images[key] = new Image();
         images[key].src = IMAGE_PATHS[key];
